@@ -4,6 +4,7 @@ import { supabase } from '../supabase';
 import ScanSound from './ScanSound';
 import NavBar from './NavBar';
 import Logout from './Logout';
+import ScanResultBottomSheet from './ScanResultBottomSheet';
 import qrCodeImg from '../assets/qrcode.jpg';
 
 const QrCodeScanner = ({ onLogout }) => {
@@ -444,105 +445,18 @@ const QrCodeScanner = ({ onLogout }) => {
                     )}
 
                     {/* Scan Result */}
-                    {scanResult && (
-                        <div className="animate-in fade-in zoom-in duration-300 w-full">
-                            <div className="bg-white/80 backdrop-blur-xl rounded-2xl xs:rounded-3xl shadow-lg border border-white/20 p-5 xs:p-6 sm:p-8 space-y-4 xs:space-y-6">
-                                {/* Success Header */}
-                                <div className="flex items-center gap-3 xs:gap-4">
-                                    <div className="w-10 h-10 xs:w-12 xs:h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 xs:w-6 xs:h-6 text-green-600">
-                                            <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-base xs:text-lg font-bold text-gray-900">Scan Successful!</h3>
-                                        <p className="text-xs xs:text-sm text-gray-500">Code detected</p>
-                                    </div>
-                                </div>
-
-                                {/* Result Content */}
-                                <div>
-                                    <p className="text-[10px] xs:text-xs font-bold text-gray-400 uppercase tracking-wider mb-1.5 xs:mb-2">Scanned Content</p>
-                                    <div className="bg-white/50 rounded-xl p-3 xs:p-4 border border-gray-100">
-                                        <p className="text-gray-900 font-medium text-sm xs:text-base break-all leading-relaxed">
-                                            {scanResult}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* Actions */}
-                                <div className="space-y-2 xs:space-y-3">
-                                    {/* Primary Actions */}
-                                    <div className="grid grid-cols-1 gap-2 xs:gap-3">
-                                        {isUrl(scanResult) ? (
-                                            <button
-                                                onClick={handleOpenLink}
-                                                className="w-full px-4 py-3 xs:px-6 xs:py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl shadow-sm transition-all duration-200 flex items-center justify-center gap-2"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 xs:w-5 xs:h-5">
-                                                    <path d="M15.75 2.25H21a.75.75 0 01.75.75v5.25a.75.75 0 01-1.5 0V4.81L8.03 17.03a.75.75 0 01-1.06-1.06L19.19 3.75h-3.44a.75.75 0 010-1.5zm-10.5 4.5a1.5 1.5 0 00-1.5 1.5v10.5a1.5 1.5 0 001.5 1.5h10.5a1.5 1.5 0 001.5-1.5V10.5a.75.75 0 011.5 0v8.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V8.25a3 3 0 013-3h8.25a.75.75 0 010 1.5H5.25z" />
-                                                </svg>
-                                                <span className="text-sm xs:text-base">Open Link</span>
-                                            </button>
-                                        ) : (
-                                            <button
-                                                onClick={handleCopy}
-                                                className="w-full px-4 py-3 xs:px-6 xs:py-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl shadow-sm transition-all duration-200 flex items-center justify-center gap-2"
-                                            >
-                                                {copied ? (
-                                                    <>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 xs:w-5 xs:h-5">
-                                                            <path fillRule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clipRule="evenodd" />
-                                                        </svg>
-                                                        <span className="text-sm xs:text-base">Copied!</span>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 xs:w-5 xs:h-5">
-                                                            <path d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 013.75 3.75v1.875C13.5 8.161 14.34 9 15.375 9h1.875A3.75 3.75 0 0121 12.75v3.375C21 17.16 20.16 18 19.125 18h-9.75A1.875 1.875 0 017.5 16.125V3.375z" />
-                                                            <path d="M15 5.25a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963A5.23 5.23 0 0017.25 7.5h-1.875A.375.375 0 0115 7.125V5.25zM4.875 6H6v10.125A3.375 3.375 0 009.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V7.875C3 6.839 3.84 6 4.875 6z" />
-                                                        </svg>
-                                                        <span className="text-sm xs:text-base">Copy Text</span>
-                                                    </>
-                                                )}
-                                            </button>
-                                        )}
-                                    </div>
-
-                                    {/* Secondary Actions */}
-                                    <div className="grid grid-cols-2 gap-2 xs:gap-3">
-                                        <button
-                                            onClick={handleScanAgain}
-                                            className="px-3 py-3 xs:px-4 xs:py-3 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium rounded-xl transition-colors duration-200 flex items-center justify-center gap-2"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 xs:w-5 xs:h-5">
-                                                <path fillRule="evenodd" d="M4.755 10.059a7.5 7.5 0 0112.548-3.364l1.903 1.903h-3.183a.75.75 0 100 1.5h4.992a.75.75 0 00.75-.75V4.356a.75.75 0 00-1.5 0v3.18l-1.9-1.9A9 9 0 003.306 9.67a.75.75 0 101.45.388zm15.408 3.352a.75.75 0 00-.919.53 7.5 7.5 0 01-12.548 3.364l-1.902-1.903h3.183a.75.75 0 000-1.5H2.984a.75.75 0 00-.75.75v4.992a.75.75 0 001.5 0v-3.18l1.9 1.9a9 9 0 0015.059-4.035.75.75 0 00-.53-.918z" clipRule="evenodd" />
-                                            </svg>
-                                            <span className="text-sm xs:text-base">Scan Again</span>
-                                        </button>
-
-                                        {isWifiConfig(scanResult) && (
-                                            <button
-                                                onClick={handleConnectWifi}
-                                                className="px-3 py-3 xs:px-4 xs:py-3 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium rounded-xl transition-colors duration-200 text-sm xs:text-base"
-                                            >
-                                                Connect WiFi
-                                            </button>
-                                        )}
-
-                                        {isContact(scanResult) && (
-                                            <button
-                                                onClick={handleSaveContact}
-                                                className="px-3 py-3 xs:px-4 xs:py-3 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium rounded-xl transition-colors duration-200 text-sm xs:text-base"
-                                            >
-                                                Save Contact
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    {/* Scan Result Bottom Sheet */}
+                    <ScanResultBottomSheet
+                        isOpen={!!scanResult}
+                        scanResult={scanResult}
+                        onClose={handleScanAgain}
+                        onCopy={handleCopy}
+                        onOpenLink={handleOpenLink}
+                        onScanAgain={handleScanAgain}
+                        onConnectWifi={handleConnectWifi}
+                        onSaveContact={handleSaveContact}
+                        copied={copied}
+                    />
                 </div>
             </div>
         </>
