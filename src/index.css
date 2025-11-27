@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@keyframes scan {
+    0% {
+        top: 0;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
+}
+
+.animate-scan {
+    animation: scan 2s ease-in-out infinite;
+}
+
+/* Remove html5-qrcode default orange border/fill */
+#qr-scanner-region video {
+    border: none !important;
+}
+
+#qr-scanner-region {
+    border: none !important;
+}
+
+/* Make the scanning box border transparent */
+div[style*="border"] {
+    border-color: transparent !important;
+}
